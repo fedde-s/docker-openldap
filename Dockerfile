@@ -1,8 +1,8 @@
-FROM debian:jessie
+FROM debian:stretch
 
 MAINTAINER Fedde Schaeffer <fedde@thehyve.nl>
 
-ENV OPENLDAP_VERSION 2.4.40
+ENV OPENLDAP_VERSION 2.4.44
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
