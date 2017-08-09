@@ -7,6 +7,16 @@ ulimit -n 8192
 
 set -e
 
+# if command starts with an option, prepend slapd
+if [ "${1:0:1}" = '-' ]; then
+    set -- slapd "$@"
+fi
+
+# skip setup if running something other than slapd
+if [ "$1" != 'slapd' ]; then
+    exec "$@"
+fi
+
 SLAPD_FORCE_RECONFIGURE="${SLAPD_FORCE_RECONFIGURE:-false}"
 
 first_run=true
