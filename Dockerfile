@@ -1,6 +1,6 @@
 FROM debian:jessie
 
-MAINTAINER Christian Luginbühl <dinkel@pimprecords.com>
+MAINTAINER Fedde Schaeffer <fedde@thehyve.nl>
 
 ENV OPENLDAP_VERSION 2.4.40
 
