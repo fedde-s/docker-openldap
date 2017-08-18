@@ -22,8 +22,8 @@ To get the full potential this image offers, one should first create a data-only
 container or (named) volumes (see "Data persistence" below) and start the 
 OpenLDAP daemon in one of these ways:
 
-    docker run -d --volumes-from your-data-container [CONFIG] dinkel/openldap
-    docker run -d --volume your-config-volume:/etc/ldap --volume your-data-volume:/var/lib/ldap [CONFIG] dinkel/openldap
+    docker run -d --name=openldap --volumes-from your-data-container [CONFIG] dinkel/openldap
+    docker run -d --name=openldap --volume your-config-volume:/etc/ldap --volume your-data-volume:/var/lib/ldap [CONFIG] dinkel/openldap
 
 An application talking to OpenLDAP should then `--link` the container:
 
@@ -112,10 +112,20 @@ pwdSafeModify: FALSE
 See the [docs](http://www.zytrax.com/books/ldap/ch6/ppolicy.html) for descriptions
 on the available attributes and what they mean.
 
-Assuming you are on a host that has the client side tools installed (maybe you 
-have to change the hostname as well), run:
+The recommended setup allows only clients in connected Docker containers to
+reach the server. To load the LDIF file into the database, run a command line
+client in a container that is linked to the server and has read access to the
+LDIF file:
 
-    ldapadd -h localhost -x -c -D 'cn=admin,dc=ldap,dc=example,dc=org' -w [$SLAPD_PASSWORD] -f default-policy.ldif
+```shell
+docker run --rm \
+    --link openldap \
+    --volume "$PWD/default_policy.ldif:/in.ldif:ro" \
+    dinkel/openldap \
+    ldapadd -H ldap://openldap \
+        -xD 'cn=admin,dc=ldap,dc=example,dc=org' -w [$SLAPD_PASSWORD] \
+        -cf /in.ldif
+```
 
 or use the prepopulation capability described below.
 
