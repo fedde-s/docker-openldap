@@ -1,6 +1,17 @@
 docker-openldap
 ===============
 
+Intro to LDAP
+-------------
+
+This repo was forked for local testing while integrating
+LDAP identity providers with other software.
+For an introduction and summary of the insights gained from that,
+see [this file](using-ldap.md)
+
+General image docs
+------------------
+
 The image is based on Debian stable ("stretch" at the moment). The Dockerfile is
 inspired by [cnry/openldap](https://registry.hub.docker.com/u/cnry/openldap/),
 but as said before, running a stable Debian and be a little less verbose, but
